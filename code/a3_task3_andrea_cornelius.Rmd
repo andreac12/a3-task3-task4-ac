@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(here)
 library(janitor)
+library(kableExtra)
 ```
 
 ## Read in the data
@@ -47,3 +48,17 @@ ggplot(urchins_clean, aes(x = size, fill = common_name)) +
 ```
 
 **Figure # 1: Urchin count by size for both red and purple urchins.**
+
+## Descriptive statistics table
+```{r}
+# Make a summary table for red and purple urchins including mean, median, standard deviation, and sample size; call it out.
+urchins_summary <- urchins_clean %>%
+  group_by(common_name) %>%
+  summarize(mean_size = mean(size),
+            median_size = median(size),
+            sd_size = sd(size),
+            n = n())
+
+urchins_summary
+```
+
