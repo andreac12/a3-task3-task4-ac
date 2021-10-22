@@ -54,10 +54,11 @@ ggplot(urchins_clean, aes(x = size, fill = common_name)) +
 # Make a summary table for red and purple urchins including mean, median, standard deviation, and sample size; call it out.
 urchins_summary <- urchins_clean %>%
   group_by(common_name) %>%
-  summarize(mean_size = mean(size),
-            median_size = median(size),
-            sd_size = sd(size),
-            n = n())
+  summarize("Mean Size (cm)" = mean(size),
+            "Median Size (cm)" = median(size),
+            "Size Standard Deviation (cm)" = sd(size),
+            "Sample Size (cm)" = n()) %>%
+  rename("Common Name" = common_name)
 
 urchins_summary
 ```
