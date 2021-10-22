@@ -1,0 +1,49 @@
+---
+title: "Task 3 - Urchins (CORNELIUS)"
+author: "Andrea Cornelius"
+date: "10/21/2021"
+output: html_document
+---
+# Overview
+
+**Data citation**: Reed, D. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. (https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b) 
+
+# Setup
+```{r setup, include=TRUE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Attach packages
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+## Read in the data
+```{r}
+# Read in data
+urchins <- read_csv(here("data", "urchins.csv"), show_col_types = FALSE)
+```
+
+## Clean up data
+```{r}
+# Change column names to lower_snake_case
+urchins_clean <- urchins %>%
+clean_names()
+```
+
+# Section 1: Size comparisons, purple and red urchins
+
+## Data visualization
+```{r}
+# Create histogram plotting urchin size faceted by species
+ggplot(urchins_clean, aes(x = size, fill = common_name)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~common_name) +
+  scale_fill_manual(values=c("purple","red"), 
+                    name = "Common Name") +
+  labs(x = "Size (cm)",
+       y = "Urchin Count",
+       title = "Urchin Counts by Size and Species (CORNELIUS)") +
+  theme_bw()
+```
+
+**Figure # 1: Urchin count by size for both red and purple urchins.**
