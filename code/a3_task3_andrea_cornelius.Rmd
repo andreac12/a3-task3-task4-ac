@@ -16,6 +16,7 @@ library(tidyverse)
 library(here)
 library(janitor)
 library(kableExtra)
+library(lubridate)
 ```
 
 ## Read in the data
@@ -33,7 +34,7 @@ clean_names()
 
 # Section 1: Size comparisons, purple and red urchins
 
-## Data visualization
+## i. Data visualization
 ```{r}
 # Create histogram plotting urchin size faceted by species
 ggplot(urchins_clean, aes(x = size, fill = common_name)) +
@@ -49,7 +50,7 @@ ggplot(urchins_clean, aes(x = size, fill = common_name)) +
 
 **Figure # 1: Urchin count by size for both red and purple urchins.**
 
-## Descriptive statistics table
+## ii. Descriptive statistics table
 ```{r}
 # Make a summary table for red and purple urchins including mean, median, standard deviation, and sample size; call it out.
 urchins_summary <- urchins_clean %>%
@@ -57,9 +58,42 @@ urchins_summary <- urchins_clean %>%
   summarize("Mean Size (cm)" = mean(size),
             "Median Size (cm)" = median(size),
             "Size Standard Deviation (cm)" = sd(size),
-            "Sample Size (cm)" = n()) %>%
-  rename("Common Name" = common_name)
-
+            "Sample Size (cm)" = n(),
+            options(digits = 2)) %>%
+  rename("Common Name" = common_name) 
+  
+# Return summary table
 urchins_summary
+```
+
+**iii. Overall Takeaways:** The red urchin is larger than the purple urchin. There is a larger spread for the red urchins than the purple (almost 2 standard deviations instead of 1). Actual difference in mean size (urchin diameter (cm)) is 2.3 cm, whereas difference in percentage is 1.5%.
+
+# Section 2. Explore purple urchin counts by site and year
+
+## i. Data wrangling
+
+```{r}
+date <- as.Date("2008-10-10")
+
+date
+
+class(date) # Check the class
+```
+
+```{r}
+as.POSIXct(x = "10/10/08",
+           format = "%m%d%Y")
+purple_urchins <- urchins_clean %>% # Pull from clean urchins data
+  filter(common_name == "Purple Urchin") %>% # Filter by purple urchin
+  mutate(date_string = paste(date, sep = "/"),
+    date = lubridate::ymd(date_string)) %>%
+  mutate(year_new = year(date)) %>%
+mutate(site_full = case_when( # Add a new column  
+    site == "NAPL" ~ "Naples Reef",
+    site == "AQUE" ~ "Arroyo Quemado Reef", 
+    site == "CARP" ~ "Carpinteria Reef", 
+    site == "MOHK" ~ "Mohawk Reef", 
+    site == "IVEE" ~ "Isla Vista Reef"))
+
 ```
 
