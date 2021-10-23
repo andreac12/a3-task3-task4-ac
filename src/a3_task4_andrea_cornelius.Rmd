@@ -1,0 +1,25 @@
+---
+title: "TASK 4: Naples Reef (January 2010) purple urchins (CORNELIUS)"
+author: "Andrea Cornelius"
+date: "10/23/2021"
+output: html_document
+---
+# Overview
+
+**Data citation**: Reed, D. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. (https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b) 
+
+# Setup
+```{r setup, include = TRUE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(janitor)
+library(here)
+library(lubridate)
+```
+
+# Read in the data
+```{r}
+read_csv(here("data", "urchins.csv"))
+```
+
+
