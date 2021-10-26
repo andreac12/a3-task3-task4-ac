@@ -10,7 +10,7 @@ output: html_document
 
 # Setup
 ```{r setup, include=TRUE, message = FALSE, warning = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, options(digits = 2))
 # Attach packages
 library(tidyverse)
 library(here)
@@ -58,12 +58,14 @@ urchins_summary <- urchins_clean %>%
   summarize("Mean Size (cm)" = mean(size),
             "Median Size (cm)" = median(size),
             "Size Standard Deviation (cm)" = sd(size),
-            "Sample Size (cm)" = n(),
-            options(digits = 2)) %>%
+            "Sample Size (cm)" = n()) %>%
   rename("Common Name" = common_name) 
   
-# Return summary table
-urchins_summary
+# Finalize summary table through Kable
+knitr::kable(head(urchins_summary),
+             caption = "<b> Table 1: Mean, Median, and Standard Deviations for urchin radii of purple and red urchins. <b>") %>%
+  kable_styling(full_width = F)
+             
 ```
 
 **iii. Overall Takeaways:** The red urchin is larger than the purple urchin. There is a larger spread for the red urchins than the purple (almost 2 standard deviations instead of 1). Actual difference in mean size (urchin diameter (cm)) is 2.3 cm, whereas difference in percentage is 1.5%.
@@ -72,28 +74,38 @@ urchins_summary
 
 ## i. Data wrangling
 
-```{r}
-date <- as.Date("2008-10-10")
+
+```{r} 
+date <- as.Date("2008-10-10") # Classify date
 
 date
 
 class(date) # Check the class
+
+# Is this chunk really necessary?
 ```
 
-```{r}
-as.POSIXct(x = "10/10/08",
-           format = "%m%d%Y")
+```{r} 
+# Create stored subset of urchins data:
 purple_urchins <- urchins_clean %>% # Pull from clean urchins data
   filter(common_name == "Purple Urchin") %>% # Filter by purple urchin
-  mutate(date_string = paste(date, sep = "/"),
-    date = lubridate::ymd(date_string)) %>%
-  mutate(year_new = year(date)) %>%
-mutate(site_full = case_when( # Add a new column  
+  mutate(date_new = mdy(date)) %>% # Convert class to date
+  mutate(year_new = year(date_new)) %>% # Convert new column that only contains year
+mutate(site_full = case_when( # Add a new column with full site names
     site == "NAPL" ~ "Naples Reef",
     site == "AQUE" ~ "Arroyo Quemado Reef", 
     site == "CARP" ~ "Carpinteria Reef", 
     site == "MOHK" ~ "Mohawk Reef", 
     site == "IVEE" ~ "Isla Vista Reef"))
+```
 
+
+```{r}
+# Make a table containing total number of purple urchins observed by site and year
+purple_urchins_summary <- purple_urchins %>%
+  group_by(site, year_new) %>%
+  summarize(count = n())
+
+purple_urchins_summary
 ```
 
