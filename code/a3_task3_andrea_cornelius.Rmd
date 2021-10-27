@@ -109,3 +109,11 @@ purple_urchins_summary <- purple_urchins %>%
 purple_urchins_summary
 ```
 
+```{r}
+ggplot(purple_urchins_summary, aes(x = year_new, y = count)) +
+geom_col() +
+  facet_wrap("site") +
+  labs(x = "Year", y = "Urchin Count", title = "Urchin Count by Year and Site")
+
+```
+

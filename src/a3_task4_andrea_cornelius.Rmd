@@ -1,5 +1,5 @@
 ---
-title: "TASK 4: Naples Reef (January 2010) purple urchins (CORNELIUS)"
+title: "TASK 4: Naples Reef (2010) purple urchins (CORNELIUS)"
 author: "Andrea Cornelius"
 date: "10/23/2021"
 output: html_document
@@ -22,4 +22,13 @@ library(lubridate)
 read_csv(here("data", "urchins.csv"))
 ```
 
+# Compare the mean size of purple urchins in CONTROL (no giant kelp removal) to ANNUAL (annual kelp removal) sections of Naples Reef in 2010.
+```{r}
+# Date classification
+date <- as.Date("2008-10-10") # Classify date
+
+date
+
+class(date) # Check the class
+```
 
