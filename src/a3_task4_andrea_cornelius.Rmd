@@ -48,10 +48,34 @@ naples_purple_2010 <- urchins_clean %>% # Pull from clean urchins data
   filter(year_new == "2010") # Filter by year 
 ```
 
+
+```{r}
+ggplot(data = naples_purple_2010, aes(x = size, fill = treatment)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~treatment) +
+  scale_fill_manual(values=c("blue", "green"), 
+                    name = "Treatment") +
+  labs(x = "Size",
+       y = "Urchin Count",
+       title = "Urchin Counts by Size and Treatment (CORNELIUS)") +
+  theme_bw()
+```
+
 ```{r}
 # Compare the mean size of purple urchins in CONTROL (no giant kelp removal) to ANNUAL (annual kelp removal) sections of Naples Reef in 2010.
 ggplot(data = naples_purple_2010, aes(sample = size)) +
   geom_qq() +
   facet_wrap(~ treatment)
+```
+
+```{r}
+naples_purple_2010_summary <- naples_purple_2010 %>%
+  group_by(treatment) %>%
+  summarize("Mean Size (cm)" = mean(size),
+            "Size Standard Deviation (cm)" = sd(size),
+            "Sample Size (cm)" = n()) %>%
+  rename("Treatment" = treatment)
+
+naples_purple_2010_summary
 ```
 
