@@ -41,6 +41,10 @@ class(date) # Check the class
 
  Hint: convert date to "Date" class with lubridate, then use the `year()` functions to add a new columns for year that you can use as variable for filtering. 
 ```{r}
-
+naples_purple_2010 <- urchins_clean %>% # Pull from clean urchins data
+  filter(common_name == "Purple Urchin") %>% # Filter by purple urchin
+  mutate(date_new = mdy(date)) %>% # Convert class to date
+  mutate(year_new = year(date_new)) %>% # Convert new column that only contains year
+  filter(year_new == "2010")
 ```
 
