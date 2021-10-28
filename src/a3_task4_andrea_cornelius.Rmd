@@ -4,7 +4,7 @@ author: "Andrea Cornelius"
 date: "10/23/2021"
 output: html_document
 ---
-# Overview
+# Overview: In this code, I wrangle then visualize 
 
 **Data citation**: Reed, D. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. (https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b) 
 
@@ -15,6 +15,7 @@ library(tidyverse)
 library(janitor)
 library(here)
 library(lubridate)
+library(kableExtra)
 ```
 
 # Read in the data
@@ -22,7 +23,6 @@ library(lubridate)
 read_csv(here("data", "urchins.csv"))
 ```
 
-# Compare the mean size of purple urchins in CONTROL (no giant kelp removal) to ANNUAL (annual kelp removal) sections of Naples Reef in 2010.
 
 ```{r}
 # Change column names to lower_snake_case
@@ -45,6 +45,13 @@ naples_purple_2010 <- urchins_clean %>% # Pull from clean urchins data
   filter(common_name == "Purple Urchin") %>% # Filter by purple urchin
   mutate(date_new = mdy(date)) %>% # Convert class to date
   mutate(year_new = year(date_new)) %>% # Convert new column that only contains year
-  filter(year_new == "2010")
+  filter(year_new == "2010") # Filter by year 
+```
+
+```{r}
+# Compare the mean size of purple urchins in CONTROL (no giant kelp removal) to ANNUAL (annual kelp removal) sections of Naples Reef in 2010.
+ggplot(data = naples_purple_2010, aes(sample = size)) +
+  geom_qq() +
+  facet_wrap(~ treatment)
 ```
 

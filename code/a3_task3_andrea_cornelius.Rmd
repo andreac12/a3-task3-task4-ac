@@ -109,10 +109,13 @@ purple_urchins_summary
 ```
 
 ```{r}
-ggplot(purple_urchins_summary, aes(x = year_new, y = count)) +
+ggplot(purple_urchins_summary, aes(x = year_new, y = count, color = site)) +
 geom_col() +
   facet_wrap("site") +
   labs(x = "Year", y = "Urchin Count", title = "Urchin Count by Year and Site")
-
 ```
 
+Do you think this graph reflects changes in the purple urchin population? What would you have to take into account to determine whether the changes in counts by year are reflective of actual changes in urchin population? What else could explain the changes in number of purple urchins observed? 
+You would have to take into account how often data measurements (observations) were taken -- was it done consistently? Looking at the data, it seems that observations were not taken regularly -- they would happen every day for a couple days, then there would be weeks or whole months without any data taken. Also, you would have to take into account other potential ecological stressers, including predators (?), human harvesting of urchins, conditions affecting kelp and/or urchin health (since they relate to each other).
+
+# END TASK 3
