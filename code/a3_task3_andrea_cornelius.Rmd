@@ -76,13 +76,12 @@ knitr::kable(head(urchins_summary),
 
 
 ```{r} 
+# Date classification
 date <- as.Date("2008-10-10") # Classify date
 
 date
 
 class(date) # Check the class
-
-# Is this chunk really necessary?
 ```
 
 ```{r} 
